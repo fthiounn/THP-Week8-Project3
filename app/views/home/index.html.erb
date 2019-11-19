@@ -11,11 +11,15 @@
       <h3 class="card-title"><%= category.title  %></h3>
       <ul class= "card-content">
         <% category.tasks.each do |task|  %>
-          <li>
+          <li id="task-<%= task.id%>">
             <%= task.title  %>
             <% unless task.deadline.nil? %>
               , to read: <%= task.deadline.strftime('%D')  %>
             <%end%>
+            <%= check_box_tag :task, task.status, task.status , data: { remote: true, url: task_path(task), params: { id: task.id, origin: "checkbox"}.to_param, method: "put" }%>
+            <%= link_to task_path(task), data: {:confirm => 'Are you sure?'}, :method => :delete, remote: true  do %>
+              <%= fa_icon "trash-alt", style: "color:orange;"%>
+            <% end %>
           </li>
         <% end %>
       </ul>

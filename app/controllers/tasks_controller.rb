@@ -9,16 +9,20 @@ class TasksController < ApplicationController
     @category = Category.find(category_params)
     @task.category = @category
     if @task.save
-      flash[:notice] = "Task created"
+      respond_to do |format|
+        format.html {
+          flash[:notice] = "Task created"
+        redirect_to root_path }
+        format.js { flash.now[:notice] = "Task created" }
+      end
     else
-      flash[:notice] = "Please try again"
+      respond_to do |format|
+        format.html {
+          flash.now[:notice] = "Please try again"
+        redirect_to root_path }
+        format.js { flash.now[:notice] = "Please try again"}
+      end
     end
-
-    respond_to do |format|
-      format.html { redirect_to root_path }
-      format.js {}
-    end
-
   end
 
   def edit
@@ -30,8 +34,12 @@ class TasksController < ApplicationController
   def update
     @task = Task.find(params[:id])
     @task.update(task_params)
-    redirect_to tasks_path
-    flash[:notice] = "Task edited"
+    respond_to do |format|
+      format.html {
+        flash[:notice] = "Task edited"
+      redirect_to root_path }
+      format.js { flash[:notice] = "Task edited"}
+    end
   end
 
   def index
@@ -40,8 +48,14 @@ class TasksController < ApplicationController
 
   def destroy
     @task = Task.find(params[:id])
+    @taskId = @task.id
     @task.destroy
-    redirect_to root_path
+    respond_to do |format|
+      format.html {
+        flash[:notice] = "Task deleted"
+      redirect_to root_path }
+      format.js { flash.now[:notice] = "Task deleted" }
+    end
   end
 
 
