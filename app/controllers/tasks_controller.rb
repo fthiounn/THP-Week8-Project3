@@ -1,5 +1,5 @@
 class TasksController < ApplicationController
-before_action :authenticate_user!
+  before_action :authenticate_user!
   def new
     @categories = Category.all
   end
@@ -9,12 +9,16 @@ before_action :authenticate_user!
     @category = Category.find(category_params)
     @task.category = @category
     if @task.save
-      redirect_to root_path
       flash[:notice] = "Task created"
     else
-      redirect_to root_path
       flash[:notice] = "Please try again"
     end
+
+    respond_to do |format|
+      format.html { redirect_to root_path }
+      format.js {}
+    end
+
   end
 
   def edit
