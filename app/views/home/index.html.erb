@@ -11,7 +11,7 @@
       <h3 class="card-title"><%= category.title  %></h3>
       <ul class= "card-content">
         <% category.tasks.each do |task|  %>
-          <li id="task-<%= task.id%>">
+          <li id="task-<%= task.id%>" <% if task.status  %> class="statusTrue" <% end %> >
             <%= task.title  %>
             <% unless task.deadline.nil? %>
               , to read: <%= task.deadline.strftime('%D')  %>

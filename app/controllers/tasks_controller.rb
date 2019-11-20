@@ -32,13 +32,24 @@ class TasksController < ApplicationController
   end
 
   def update
-    @task = Task.find(params[:id])
-    @task.update(task_params)
-    respond_to do |format|
-      format.html {
-        flash[:notice] = "Task edited"
-      redirect_to root_path }
-      format.js { flash[:notice] = "Task edited"}
+    if params[:origin] == "checkbox" then
+      @task = Task.find(params[:id])
+      (!params[:task])? (@task.update(status: false)):(@task.update(status: true))
+      respond_to do |format|
+        format.html {
+          flash[:notice] = "Task Status edited"
+        redirect_to root_path }
+        format.js { flash[:notice] = "Task Status edited"}
+      end
+    else
+      @task = Task.find(params[:id])
+      @task.update(task_params)
+      respond_to do |format|
+        format.html {
+          flash[:notice] = "Task edited"
+        redirect_to root_path }
+        format.js { flash[:notice] = "Task edited"}
+      end
     end
   end
 
